@@ -17,7 +17,7 @@
 
     <header class="p-10 md:px-20 md:py-12 border-b border-black/5 bg-white">
         <a id="headerLink" href="#" target="_blank" class="block hover:opacity-70 transition w-max">
-            <h1 id="headerName" class="font-black text-6xl tracking-tighter uppercase mb-4">Studio</h1>
+            <h1 id="headerName" class="font-black text-6xl tracking-tighter uppercase mb-4">StudioM7®</h1>
         </a>
         <div class="grid grid-cols-1 md:grid-cols-2">
             <p class="text-xs font-bold bracket uppercase tracking-widest text-[#666]">01 Gerador de Propostas</p>
@@ -34,7 +34,7 @@
                 <h2 class="text-xl font-bold tracking-tight text-black uppercase border-b border-black/10 pb-2">0. Selecione a Empresa</h2>
                 <select id="tenantSelect" class="w-full bg-gray-100 border border-gray-300 p-3 rounded-md focus:outline-none font-bold text-sm uppercase cursor-pointer">
                     <option value="horizon" selected>Horizon Lab</option>
-                    <option value="m7">Studio M7</option>
+                    <option value="m7">StudioM7</option>
                 </select>
             </div>
 
@@ -148,6 +148,18 @@
                 <div class="pt-4 mt-auto">
                     <p class="text-[10px] font-bold uppercase text-tenant mb-1 transition-colors" id="labelValorTotal">Valor Total</p>
                     <p class="text-5xl font-black tracking-tighter text-tenant transition-colors">R$ <span id="propTotal">0,00</span></p>
+
+<!-- NOVO: Bloco de Pagamento PIX -->
+                    <div class="border border-black/10 p-4 rounded-sm bg-[#FAFAFA] flex justify-between items-center w-full max-w-md">
+                        <div>
+                            <p class="text-[10px] font-bold uppercase text-[#888] mb-1">Pagamento via PIX</p>
+                            <p class="text-sm font-medium text-black tracking-tight" id="propPixKey">---</p>
+                        </div>
+                        <div class="text-[10px] text-[#666] font-bold uppercase bg-black/5 px-2 py-1 rounded">
+                            Chave: <span id="propPixType">---</span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="mt-12 pt-6 border-t border-black/10 flex justify-between items-center text-[8px] font-bold text-[#888] uppercase tracking-widest w-full">

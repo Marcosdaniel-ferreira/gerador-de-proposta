@@ -1,22 +1,24 @@
-// 1. Configurações Globais refatoradas para cenário Horizon
+// 1. Configurações Globais (Nova regra: Chaves PIX por Tenant)
 const CONFIG = {
     taxes: {
-        asaas: 0.0199 // Imposto de 6% removido
+        asaas: 0.0199 
     },
     tenants: {
         horizon: {
             name: 'Horizon Lab',
-            site: 'https://horizonvisual.vercel.app',
-            logo: './assets/img/logo-horizon.png', // Lembre-se de atualizar os assets
+            site: 'https://horizonlab.com.br',
+            logo: './assets/img/logo-horizon.png',
             prefixId: 'HZ',
-            colors: { bg: '#1E3A8A', text: '#FFFFFF' }
+            colors: { bg: '#1E3A8A', text: '#FFFFFF' },
+            pix: { tipo: 'CNPJ', chave: '36.501.017/0001-70' } // Altere para o dado real
         },
         m7: {
             name: 'Studio M7',
             site: 'https://studiom7.framer.website',
             logo: './assets/img/logo-m7.png',
             prefixId: 'M7',
-            colors: { bg: '#000000', text: '#FFFFFF' }
+            colors: { bg: '#000000', text: '#FFFFFF' },
+            pix: { tipo: 'CNPJ', chave: '36.501.017/0001-70' } // Altere para o dado real
         }
     }
 };
@@ -35,7 +37,6 @@ const Utils = {
 class ProposalCalculator {
     static calculate(baseValue, extraCost, checklistCosts) {
         const totalFaturado = baseValue + extraCost;
-        // Calculando apenas com a taxa Asaas agora
         const totalImpostos = totalFaturado * CONFIG.taxes.asaas;
         const lucroLiquido = totalFaturado - totalImpostos - checklistCosts - extraCost;
 
@@ -45,12 +46,11 @@ class ProposalCalculator {
 
 class UIController {
     constructor() {
-        this.currentTenant = 'horizon'; // Default setado para Horizon Lab
+        this.currentTenant = 'horizon'; 
         this.cacheDOM();
         this.bindEvents();
         this.updateTenantTheme();
         
-        // Exibe apenas Asaas na UI
         const taxTotal = (CONFIG.taxes.asaas * 100).toFixed(2);
         this.dom.displayTaxas.innerText = `Taxa Asaas: ${taxTotal}%`;
     }
@@ -61,7 +61,7 @@ class UIController {
             headerName: document.getElementById('headerName'),
             headerLink: document.getElementById('headerLink'),
             tipoProjeto: document.getElementById('tipoProjeto'),
-            descricaoServico: document.getElementById('descricaoServico'), // Novo mapeamento
+            descricaoServico: document.getElementById('descricaoServico'),
             btnProcessar: document.getElementById('btnProcessar'),
             btnPdf: document.getElementById('btnPdf'),
             displayTaxas: document.getElementById('displayTaxas')
@@ -89,6 +89,10 @@ class UIController {
         document.getElementById('pdfLogo').src = tenant.logo;
         document.getElementById('pdfLinkSite').href = tenant.site;
         
+        // Data Binding: Informações de PIX e Metadados
+        document.getElementById('propPixType').innerText = tenant.pix.tipo;
+        document.getElementById('propPixKey').innerText = tenant.pix.chave;
+        
         const dataAtual = new Date();
         document.getElementById('propId').innerText = `ID: ${tenant.prefixId}-${dataAtual.getFullYear()}`;
         document.getElementById('propData').innerText = `DATE: ${dataAtual.toLocaleDateString('pt-BR')}`;
@@ -98,7 +102,7 @@ class UIController {
     processProposal() {
         const inputs = {
             cliente: document.getElementById('clienteNome').value.trim() || 'CLIENTE NÃO DEFINIDO',
-            categoria: this.dom.tipoProjeto.value.trim() || 'SERVIÇO NÃO DEFINIDO', // Input livre requer trim()
+            categoria: this.dom.tipoProjeto.value.trim() || 'SERVIÇO NÃO DEFINIDO',
             descricao: this.dom.descricaoServico.value.trim(),
             valorBase: Utils.parseCurrencyInput(document.getElementById('valorProjeto').value),
             nomeExtra: document.getElementById('nomeFerramenta').value.trim(),
@@ -116,16 +120,13 @@ class UIController {
             checklistCosts
         );
 
-        // Preenchimento de Lucro
         document.getElementById('valorLucroInterno').innerText = Utils.formatCurrency(lucroLiquido);
         document.getElementById('painelLucro').classList.remove('hidden');
 
-        // Preenchimento de PDF
         document.getElementById('propCliente').innerText = inputs.cliente;
         document.getElementById('propCategoria').innerText = inputs.categoria;
         document.getElementById('propValorBase').innerText = Utils.formatCurrency(inputs.valorBase);
         
-        // Tratamento da Descrição
         const blocoDescricao = document.getElementById('blocoDescricao');
         if (inputs.descricao) {
             document.getElementById('propDescricao').innerText = inputs.descricao;
@@ -134,7 +135,6 @@ class UIController {
             blocoDescricao.classList.add('hidden');
         }
 
-        // Mantém a inteligência de tag Recorrente caso a pessoa digite "Branding" manualmente
         const isRecorrente = inputs.categoria.toUpperCase().includes('BRANDING');
         document.getElementById('labelValorTotal').innerText = isRecorrente ? 'VALOR MENSAL (RECORRENTE)' : 'VALOR TOTAL DO PROJETO';
         document.getElementById('propTotal').innerText = Utils.formatCurrency(totalFaturado);
