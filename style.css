@@ -1,0 +1,22 @@
+/* style.css */
+:root {
+    --color-tenant-bg: #000000;
+    --color-tenant-text: #FFFFFF;
+    --bg-app: #F2F2F2;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--bg-app); 
+    color: #000; 
+}
+
+/* Utilitários dinâmicos que o Tailwind não resolve sozinho dinamicamente (sem build) */
+.bg-tenant { background-color: var(--color-tenant-bg); }
+.text-tenant { color: var(--color-tenant-bg); }
+.text-tenant-inverse { color: var(--color-tenant-text); }
+.accent-tenant { accent-color: var(--color-tenant-bg); }
+
+.font-black { font-weight: 900; }
+.bracket::before { content: "["; margin-right: 4px; color: #888; }
+.bracket::after { content: "]"; margin-left: 4px; color: #888; }
