@@ -7,14 +7,14 @@ const CONFIG = {
         horizon: {
             name: 'Horizon Lab',
             site: 'https://horizonvisual.vercel.app',
-            logo: '/assets/img/logo-horizon.png', // Lembre-se de atualizar os assets
+            logo: './assets/img/logo-horizon.png', // Lembre-se de atualizar os assets
             prefixId: 'HZ',
             colors: { bg: '#1E3A8A', text: '#FFFFFF' }
         },
         m7: {
             name: 'Studio M7',
             site: 'https://studiom7.framer.website',
-            logo: '/assets/img/logo-m7.png',
+            logo: './assets/img/logo-m7.png',
             prefixId: 'M7',
             colors: { bg: '#000000', text: '#FFFFFF' }
         }
