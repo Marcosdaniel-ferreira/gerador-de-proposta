@@ -20,3 +20,67 @@ body {
 .font-black { font-weight: 900; }
 .bracket::before { content: "["; margin-right: 4px; color: #888; }
 .bracket::after { content: "]"; margin-left: 4px; color: #888; }
+
+/* ==========================================================================
+   RESPONSIVIDADE (MOBILE & TABLET)
+   Override do layout desktop sem alterar a AST do HTML/JS
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    /* 1. Bloqueia o scroll horizontal na raiz */
+    body, html {
+        overflow-x: hidden;
+    }
+
+    /* 2. Ajusta os espaçamentos do cabeçalho e painel lateral */
+    header {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    header h1 {
+        font-size: 3rem !important;
+    }
+
+    main > section {
+        padding: 2rem 1.5rem !important;
+    }
+
+    /* 3. Escala a prévia do documento para caber no viewport do celular */
+    #documentoProposta {
+        /* Sobrescreve o padding inline (60px 50px) do HTML */
+        padding: 30px 20px !important; 
+        min-height: auto !important;
+        margin-top: 20px;
+    }
+
+    /* 4. Redução tipográfica cirúrgica na prévia (evita quebra de layout) */
+    #documentoProposta h4 {
+        font-size: 1.5rem !important; /* Nome do cliente */
+    }
+
+    #propCategoria {
+        font-size: 1.125rem !important;
+    }
+
+    #propValorBase {
+        font-size: 1.125rem !important;
+    }
+
+    /* Ajuste do Valor Total na prévia */
+    #propTotal {
+        font-size: 2.5rem !important; 
+    }
+
+    /* Ajuste do Bloco de Pagamento PIX para evitar overflow de chaves longas */
+    #documentoProposta .max-w-md {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* Scroll suave na área de preview caso a tela seja muito pequena (ex: iPhone SE) */
+section.lg\:col-span-7 {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
